@@ -18,6 +18,24 @@ def get_db():
     
     return conn, cur
 
+def get_all_posts():
+    
+    select_posts = """
+    select * from posts
+    order by id desc
+    ;
+    """
+
+    conn, cur = get_db()
+
+    cur.execute(select_posts)
+    posts = cur.fetchall()
+
+    conn.close()
+
+    return posts
+
+
 
 # ---------------------------------------
 
@@ -46,12 +64,17 @@ def index():
 
 @app.route("/admin/")
 def admin():
-    return "em contrução"
+    return render_template("admin.html")
 
 
 @app.route("/admin/blog/")
 def admin_blog():
-    return "em contrução"
+
+    output = None
+
+    output = get_all_posts()
+
+    return render_template("admin_blog.html", output = output)
 
 
 @app.route("/admin/create/")

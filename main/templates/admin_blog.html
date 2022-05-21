@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block título %} Admin blog {% endblock título %}
+
+{% block conteúdo %}
+    <a href="/create/">Criar novo post</a>
+
+    {{output}}
+
+    <table>
+        {% for row in output %}
+            <tr>
+                <th>{{row[0]}}</th>
+                <th>{{row[1]}}</th>
+                <th>{{row[2]}}</th>
+                <th>{{row[3]}}</th>
+                <th><a href="/">modificar</a></th>
+                <th><a href="/">deletar</a></th>
+            </tr>
+        {% endfor %}
+
+    </table>
+    
+{% endblock conteúdo %}
