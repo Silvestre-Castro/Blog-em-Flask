@@ -9,7 +9,18 @@
 
 {% block conteúdo %}
 
-    <h1>hello, world</h1>
+    <h2>Últimas Postagens</h2>
+
+    {% for row in output %}
+
+        <article>
+            <h3>{{row['título']}}</h3>
+            <p>{{row['conteúdo']}}</p>
+        </article>
+        <br>
+        <br>
+
+    {% endfor %}
 
 
 {% endblock conteúdo %}

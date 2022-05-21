@@ -5,14 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block título %} {% endblock título %}</title>
+
+    <!-- fav icon de exemplo -->
     <link rel="shortcut icon" href="{{url_for('static', filename='imagens/favicon-python.ico')}}" type="image/x-icon">
 
-
+    <!-- simple css-->
+    <link rel="stylesheet" href="{{url_for('static', filename = 'estilos/simple.css')}}">
 
 </head>
 <body>
-    {% block conteúdo %}
+    <header>
+        <h1>Blog em FLask</h1>
+        <p>Projeto para praticar CRUD e Admin area.</p>
+        <nav>
+            <a href="/blog">Blog</a>
+            <a href="/admin">Admin</a>
+        </nav>
+    </header>
+
+    <main>
+        {% block conteúdo %}
         
-    {% endblock conteúdo %}
+        {% endblock conteúdo %}
+    </main>
 </body>
 </html>
