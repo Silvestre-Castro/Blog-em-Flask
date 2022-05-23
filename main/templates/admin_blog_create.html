@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block título %}
+    Novo post
+{% endblock título %}
+
+{% block conteúdo %}
+
+    <form action="" method="post">
+
+        <p>
+            <label for="título">Título:</label><br>
+            <input name= "título" type="text" required>
+
+        </p>
+        
+        <p>
+            <label for="Conteúdo">Conteúdo:</label><br>
+            <textarea name="conteúdo" cols="30" rows="10" required></textarea>
+        </p>
+
+        <button type="submit">Postar</button>
+    </form>
+
+    {% if output != None %}
+        <article>
+            <p>Post inserido com sucesso! 
+            <a href="/admin/blog">Voltar para administração do blog</a></p>
+        </article>
+    {% endif %}
+{% endblock conteúdo %}

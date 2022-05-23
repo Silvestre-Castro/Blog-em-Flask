@@ -3,9 +3,7 @@
 {% block título %} Admin blog {% endblock título %}
 
 {% block conteúdo %}
-    <a href="/create/">Criar novo post</a>
-
-    {{output}}
+    <a href="/admin/blog/create/">Criar novo post</a>
 
     <table>
         {% for row in output %}
@@ -15,7 +13,7 @@
                 <th>{{row[2]}}</th>
                 <th>{{row[3]}}</th>
                 <th><a href="/">modificar</a></th>
-                <th><a href="/">deletar</a></th>
+                <th><a href="/admin/blog/{{row[0]}}/delete">deletar</a></th>
             </tr>
         {% endfor %}
 

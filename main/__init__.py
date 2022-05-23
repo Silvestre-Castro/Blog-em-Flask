@@ -1,4 +1,5 @@
-from flask import Flask, render_template, url_for
+from crypt import methods
+from flask import Flask, render_template, request, url_for
 import sqlite3
 
 app = Flask(__name__)
@@ -18,9 +19,15 @@ def get_db():
     
     return conn, cur
 
-def get_all_posts():
-    
-    select_posts = """
+def get_all_posts(ordem = "asc"):
+
+    select_posts_asc = """
+    select * from posts
+    order by id asc
+    ;
+    """
+
+    select_posts_desc = """
     select * from posts
     order by id desc
     ;
@@ -28,7 +35,11 @@ def get_all_posts():
 
     conn, cur = get_db()
 
-    cur.execute(select_posts)
+    if ordem == "desc":
+        cur.execute(select_posts_desc)
+    elif ordem == "asc":
+        cur.execute(select_posts_asc)
+    
     posts = cur.fetchall()
 
     conn.close()
@@ -49,13 +60,7 @@ def index():
 
     conn, cur = get_db()
 
-    select_posts = """
-    select * from posts
-    order by id desc
-    ;
-    """
-    cur.execute(select_posts)
-    output = cur.fetchall()
+    output = get_all_posts(ordem = "desc")
 
     conn.close()
 
@@ -77,19 +82,56 @@ def admin_blog():
     return render_template("admin_blog.html", output = output)
 
 
-@app.route("/admin/create/")
+@app.route("/admin/blog/create/", methods= ("POST", "GET"))
 def admin_blog_create():
-    return "em contrução"
+
+    input = output = None
+
+    insert_post = """
+    insert into posts (título, conteúdo)
+    values
+    (?, ?)
+    ;
+    """
+
+    if request.method == "POST":
+        input = request.form
+
+        conn, cur = get_db()
+
+        cur.execute(insert_post, (input['título'], input['conteúdo']))
+
+        conn.commit()
+        conn.close()
+
+    return render_template('admin_blog_create.html', output = input)
 
 
-@app.route("/admin/update/")
+@app.route("/admin/blog/update/")
 def admin_blog_update():
     return "em contrução"
 
 
-@app.route("/admin/delete/")
-def admin_blog_delete():
-    return "em contrução"
+@app.route("/admin/blog/<int:id>/delete/")
+def admin_blog_delete(id = id):
+
+    output = id
+
+    delete_post = """
+    delete from posts
+    where id = ?
+    ;
+    """
+
+    conn, cur = get_db()
+
+    cur.execute(delete_post, (id,))
+
+    conn.commit()
+    conn.close()
+
+
+    return render_template("admin_blog_delete.html", output = output)
 
 
 
