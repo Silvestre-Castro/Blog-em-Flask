@@ -1,5 +1,5 @@
-from crypt import methods
-from flask import Flask, render_template, request, url_for
+
+from flask import Flask, render_template, request, url_for, redirect
 import sqlite3
 
 app = Flask(__name__)
@@ -45,6 +45,24 @@ def get_all_posts(ordem = "asc"):
     conn.close()
 
     return posts
+
+
+def get_post(id):
+
+    conn, cur = get_db()
+
+    select_post = """
+    select * from posts
+    where id = ?
+    ;
+    """
+
+    cur.execute(select_post, (id,))
+    post = cur.fetchone()
+
+    conn.close()
+
+    return post 
 
 
 
@@ -107,9 +125,39 @@ def admin_blog_create():
     return render_template('admin_blog_create.html', output = input)
 
 
-@app.route("/admin/blog/update/")
-def admin_blog_update():
-    return "em contrução"
+@app.route("/admin/blog/<int:id>/update/", methods = ("POST", "GET"))
+def admin_blog_update(id):
+
+    output = None
+    post = get_post(id)
+
+
+    if request.method == "POST":
+
+        título = request.form['título']
+        conteúdo = request.form['conteúdo']
+
+        update_post = """
+        update 
+            posts
+        set 
+            título = ?,
+            conteúdo = ?
+        where
+            id = ?
+        ;
+        """
+
+        conn, cur = get_db()
+
+        cur.execute(update_post, (título, conteúdo, id))
+
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('admin_blog'))
+
+    return render_template("admin_blog_update.html", output = post)
 
 
 @app.route("/admin/blog/<int:id>/delete/")

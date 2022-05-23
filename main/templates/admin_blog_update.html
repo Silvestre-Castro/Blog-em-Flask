@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+{% block título %} Update {% endblock título %}
+
+
+{% block conteúdo %}  
+
+    <form action="" method="post">
+
+        <p>
+            <label for="título">Título:</label><br>
+            <input type="text" name="título" required value="{{output['título']}}">
+        </p>
+
+        <p>
+            <label for="conteúdo">Conteúdo:</label><br>
+            <textarea name="conteúdo" cols="30" rows="10" required>{{output['conteúdo']}}</textarea>
+        </p>
+
+        <button type="submit">Salvar</button>
+    </form>
+    
+{% endblock conteúdo %}
